@@ -1,26 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const Entry = require('../schemas/entry');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bc', { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.on('connected', () => {
-  console.log('Entries | MongoDB connected');
+  console.log('Entries | MongoDB conectado');
 });
-
-const entrySchema = new mongoose.Schema({
-  type: String,
-  categories: String,
-  description: String,
-  value: String,
-  due_date: Date,
-  status: String,
-  account: String,
-  comments: String,
-  payment_date: Date
-});
-
-const Entry = mongoose.model('Entry', entrySchema);
 
 // Return all entries
 // GET "/entries"

@@ -1,19 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const Account = require('../schemas/account');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bc', { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.on('connected', () => {
   console.log('Accounts | MongoDB conectado');
 });
-
-const accountsSchema = new mongoose.Schema({
-  description: String,
-  comments: String
-});
-
-const Account = mongoose.model('Account', accountsSchema);
 
 // Return all accounts
 // GET "/accounts"

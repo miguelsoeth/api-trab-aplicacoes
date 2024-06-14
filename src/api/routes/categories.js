@@ -1,19 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const Category = require('../schemas/category');
 
 mongoose.connect('mongodb://127.0.0.1:27017/bc', { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.on('connected', () => {
-  console.log('Categories | MongoDB connected');
+  console.log('Categories | MongoDB conectado');
 });
-
-const categorySchema = new mongoose.Schema({
-  description: String,
-  type: String
-});
-
-const Category = mongoose.model('Category', categorySchema);
 
 // Return all categories
 // GET "/categories"
