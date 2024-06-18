@@ -40,18 +40,25 @@ router.get('/:pid', async (req, res) => {
 // PUT "/users/:id" BODY { ... }
 router.put('/:pid', async (req, res) => {
   const pid = req.params.pid;
-  const newUser = req.body.user;
-  console.log(newUser);
+  const newUser = req.body;
+
+  if (newUser.pwd) {
+    const salt = await bcrypt.genSalt(10);
+    newUser.pwd = await bcrypt.hash(newUser.pwd, salt);
+  }
+
+  //console.log(newUser);
   try {
     const updatedUser = await User.findByIdAndUpdate(pid, 
       { 
-        author_name: newUser.author_name, 
-        author_email: newUser.author_email,
-        author_pwd: newUser.author_pwd,
-        author_level: newUser.author_level,
-        author_status: newUser.author_status,
+        name: newUser.name, 
+        email: newUser.email,
+        user: newUser.user,
+        pwd: newUser.pwd,
+        level: newUser.level,
+        status: newUser.status,
       }, { new: true });
-    console.log('Objeto Atualizado:', updatedUser);
+    //console.log('Objeto Atualizado:', updatedUser);
     res.json({ message: 'Usuário alterado com sucesso!', updatedUser });
   } catch (err) {
     res.status(400).json({ message: err.message });
