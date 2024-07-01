@@ -71,4 +71,21 @@ router.delete('/:pid', async (req, res) => {
   }
 });
 
+
+router.post('/register', async (req, res) => {
+  const user = req.body;
+  if (user.pwd) {
+    const salt = await bcrypt.genSalt(10);
+    user.pwd = await bcrypt.hash(user.pwd, salt);
+  }
+  console.log(user);
+  try {
+    const newUser = await User.create(user);
+    console.log('Objeto salvo com sucesso!');
+    res.json({ message: 'Usuário salvo com sucesso!', newUser });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 module.exports = router;
