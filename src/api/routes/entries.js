@@ -1,13 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const Entry = require('../schemas/entry');
-
-mongoose.connect('mongodb://127.0.0.1:27017/bc', { useNewUrlParser: true, useUnifiedTopology: true });
-
-mongoose.connection.on('connected', () => {
-  console.log('Entries | MongoDB conectado');
-});
 
 // Return all entries
 // GET "/entries"

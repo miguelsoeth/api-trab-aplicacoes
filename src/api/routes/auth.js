@@ -1,15 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../schemas/user');
-
-mongoose.connect('mongodb://127.0.0.1:27017/bc', { useNewUrlParser: true, useUnifiedTopology: true });
-
-mongoose.connection.on('connected', () => {
-  console.log('Login | MongoDB conectado');
-});
 
 // Endpoint de login
 // POST "auth/login" BODY { user, pwd }
@@ -52,6 +45,22 @@ router.post('/validate', async (req, res) => {
 
     return res.status(200).json({ message: 'Token válido', foundUser });
   });
+});
+
+router.post('/register', async (req, res) => {
+  const user = req.body;
+  if (user.pwd) {
+    const salt = await bcrypt.genSalt(10);
+    user.pwd = await bcrypt.hash(user.pwd, salt);
+  }
+  console.log(user);
+  try {
+    const newUser = await User.create(user);
+    console.log('Objeto salvo com sucesso!');
+    res.json({ message: 'Usuário salvo com sucesso!', newUser });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
 });
 
 module.exports = router;

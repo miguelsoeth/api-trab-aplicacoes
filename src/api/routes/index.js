@@ -6,6 +6,9 @@ const categories = require('./categories')
 const entries = require('./entries')
 const auth = require('./auth')
 const authMiddleware = require('../middlewares/authMiddleware');
+const connectDB = require('../config/db');
+
+connectDB();
 
 router.use(express.json())
 router.use('/users', authMiddleware, users)
